@@ -132,7 +132,7 @@ void BinarySearchTree::twoRotations(Node *TopNode, Node *SubNode, bool direction
 		rotateAndLink(TopNode, LINKED_LEFT);
 	} else {
 		TopNode->assignNewLeftNode(leftRotation(SubNode));
-		rotateAndLink(TopNode, LINKED_RIGHT);
+		rotateAndLink(TopNode, LINKED_RIGHT);mu
 	}
 }
 
