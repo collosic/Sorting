@@ -24,23 +24,40 @@ class Node {
 	Node* getRightNodePtr() { return RightNodePtr; };
 	void createNewLeftNode(int entry) { LeftNodePtr = new Node(entry); };
 	void createNewRightNode(int entry) { RightNodePtr = new Node(entry); };
-	void updateHeightOfNode(int l_height, int r_height) { height = std::max(l_height, r_height) + 1; };
+	void assignNewLeftNode(Node *NewLeftNode) { LeftNodePtr = NewLeftNode; };
+	void assignNewRightNode(Node *NewRightNode) { RightNodePtr = NewRightNode; };
+	void updateHeightOfNode(int left_h, int right_h) { height = std::max(left_h, right_h) + 1; };
 	void incrementDuplicateCount() { dup_count++; };
-	void checkIfUnbalanced();
 };	
 
 class BinarySearchTree {
 	// Private variables 
-	Node rootNode;
+	Node *RootNode;
+	Node *LinkNode;
+	bool link_direction;
 	bool is_root_empty;
 	
 	// Private methods
 	void determineEntryPlacement(Node*, int);
- 	 
+	void checkIfUnbalanced(Node*, int, int);
+	void balanceTree(Node*, bool);
+	void twoRotations(Node*, Node*, bool);
+	void rotateAndLink(Node*, bool);
+	Node* leftRotation(Node*);
+	Node* rightRotation(Node*);
+	void ascending(Node*);
+	void descending(Node*);
+	void assignLinkNode(Node* N) { LinkNode = N; };
+	Node* getLinkNode() { return LinkNode; };
+	void setLinkDirection(bool t) { link_direction = t; };
+	bool getLinkDirection() { return link_direction; };
+
   public:
-	BinarySearchTree() : rootNode() { is_root_empty = true; };
+	BinarySearchTree();
 	void insertEntry(int);
-	int getRootEntry() { return rootNode.getEntry(); };
+	int getRootEntry() { return RootNode->getEntry(); };
+	void displayTree(bool);
+	
 };
 
 
