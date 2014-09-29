@@ -118,9 +118,9 @@ void BinarySearchTree::balanceTree(Node *TopNode, bool direction) {
         // Find the height of the left and right subtrees from TopNode's LeftNode
         Node *LeftNode = TopNode->getLeftNodePtr();
         int l_node = LeftNode->getLeftNodePtr() == 0 ? EMPTY_NODE_HEIGHT 
-            							: LeftNode->getLeftNodeHeight();
+            				: LeftNode->getLeftNodeHeight();
         int r_node = LeftNode->getRightNodePtr() == 0 ? EMPTY_NODE_HEIGHT
-            							: LeftNode-> getRightNodeHeight();
+            				: LeftNode-> getRightNodeHeight();
         
         // Calculate balance factor of LeftNode 
         int left_bf = l_node - r_node;
@@ -133,9 +133,9 @@ void BinarySearchTree::balanceTree(Node *TopNode, bool direction) {
         // Opposite of LINKED_LEFT (LINKED_RIGHT)
         Node *RightNode = TopNode->getRightNodePtr();
         int l_node = RightNode->getLeftNodePtr() == 0 ? EMPTY_NODE_HEIGHT 
-            							: RightNode->getLeftNodeHeight();
+            				: RightNode->getLeftNodeHeight();
         int r_node = RightNode->getRightNodePtr() == 0 ? EMPTY_NODE_HEIGHT 
-            							: RightNode->getRightNodeHeight();
+            				: RightNode->getRightNodeHeight();
         
         int right_bf = l_node - r_node;
         
