@@ -2,7 +2,6 @@
 #include <iostream>
 #include "treesort.h"
 
-
 // CONSTANTS
 #define EMPTY_NODE_HEIGHT -1
 #define LINKED_LEFT true
@@ -81,25 +80,27 @@ void BinarySearchTree::determineEntryPlacement(Node *CurrentNode, int entry) {
 }   
 
 void BinarySearchTree::determineNewHeight(Node* CNode) {
-	// Grab the heights of the left and right subtrees.  If a node is empty
-    // the height is -1
-    int left_height = CNode->isLeftNodeEmpty() ? EMPTY_NODE_HEIGHT 
-                                        : CNode->getLeftNodeHeight();
-    int right_height = CNode->isRightNodeEmpty() ? EMPTY_NODE_HEIGHT 
-                                        : CNode->getRightNodeHeight();
+    int left_height, right_height;
+    getSubNodeHeights(CNode, left_height, right_height);
+
     // Update height on current node
     CNode->updateHeightOfNode(left_height, right_height);
 }
 
 void BinarySearchTree::determineNewHeight(Node* CNode, int &left_height, int &right_height) {
-	// Grab the heights of the left and right subtrees.  If a node is empty
-    // the height is -1
-    left_height = CNode->isLeftNodeEmpty() ? EMPTY_NODE_HEIGHT 
-                                        : CNode->getLeftNodeHeight();
-    right_height = CNode->isRightNodeEmpty() ? EMPTY_NODE_HEIGHT 
-                                        : CNode->getRightNodeHeight();
+    getSubNodeHeights(CNode, left_height, right_height);
+
     // Update height on current node
     CNode->updateHeightOfNode(left_height, right_height);
+}
+
+void BinarySearchTree::getSubNodeHeights(Node *CNode, int &left, int &right) {
+    // Grab the heights of the left and right subtrees.  If a node is empty
+    // the height is -1
+    left = CNode->isLeftNodeEmpty() ? EMPTY_NODE_HEIGHT 
+                                        : CNode->getLeftNodeHeight();
+    right = CNode->isRightNodeEmpty() ? EMPTY_NODE_HEIGHT 
+                                        : CNode->getRightNodeHeight();
 }
 
 void BinarySearchTree::checkIfUnbalanced(Node *TopNode, int left, int right) {
@@ -117,10 +118,8 @@ void BinarySearchTree::balanceTree(Node *TopNode, bool direction) {
     if(direction == LINKED_LEFT) {
         // Find the height of the left and right subtrees from TopNode's LeftNode
         Node *LeftNode = TopNode->getLeftNodePtr();
-        int l_node = LeftNode->getLeftNodePtr() == 0 ? EMPTY_NODE_HEIGHT 
-            				: LeftNode->getLeftNodeHeight();
-        int r_node = LeftNode->getRightNodePtr() == 0 ? EMPTY_NODE_HEIGHT
-            				: LeftNode-> getRightNodeHeight();
+        int l_node, r_node;
+        getSubNodeHeights(LeftNode, l_node, r_node);
         
         // Calculate balance factor of LeftNode 
         int left_bf = l_node - r_node;
@@ -132,10 +131,8 @@ void BinarySearchTree::balanceTree(Node *TopNode, bool direction) {
     } else {
         // Opposite of LINKED_LEFT (LINKED_RIGHT)
         Node *RightNode = TopNode->getRightNodePtr();
-        int l_node = RightNode->getLeftNodePtr() == 0 ? EMPTY_NODE_HEIGHT 
-            				: RightNode->getLeftNodeHeight();
-        int r_node = RightNode->getRightNodePtr() == 0 ? EMPTY_NODE_HEIGHT 
-            				: RightNode->getRightNodeHeight();
+        int l_node, r_node;
+        getSubNodeHeights(RightNode, l_node, r_node);
         
         int right_bf = l_node - r_node;
         
@@ -157,7 +154,6 @@ void BinarySearchTree::twoRotations(Node *TopNode, Node *SubNode, bool direction
         rotateAndLink(TopNode, LINKED_RIGHT);
     }
 }
-
 
 void BinarySearchTree::rotateAndLink(Node* TopNode, bool direction) {
     // Link the balanced subtree back to the Binary Search Tree
@@ -184,15 +180,13 @@ void BinarySearchTree::rotateAndLink(Node* TopNode, bool direction) {
     }
 }
 
-
 Node* BinarySearchTree::rightRotation(Node *OldTopNode) {
     Node *NewTopNode = OldTopNode->getLeftNodePtr();
     OldTopNode->assignNewLeftNode(NewTopNode->getRightNodePtr());
     NewTopNode->assignNewRightNode(OldTopNode);
+
+    // Update heights of rotated Nodes
     determineNewHeight(OldTopNode);
-    if(NewTopNode->getRightNodePtr() != NULL_PTR) {
-    	determineNewHeight(NewTopNode->getRightNodePtr());
-    }
     determineNewHeight(NewTopNode);
     return NewTopNode;
 }
@@ -201,10 +195,9 @@ Node* BinarySearchTree::leftRotation(Node *OldTopNode) {
     Node *NewTopNode = OldTopNode->getRightNodePtr();
     OldTopNode->assignNewRightNode(NewTopNode->getLeftNodePtr());
     NewTopNode->assignNewLeftNode(OldTopNode);
+    
+    // Update heights of rotated Nodes
     determineNewHeight(OldTopNode);
-    if(NewTopNode->getLeftNodePtr() != NULL_PTR) {
-    	determineNewHeight(NewTopNode->getLeftNodePtr());
-    }
     determineNewHeight(NewTopNode);
     return NewTopNode;
 }

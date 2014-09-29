@@ -55,6 +55,7 @@ class BinarySearchTree {
     void determineNewHeight(Node*);
     void determineNewHeight(Node*, int&, int&);
     void checkForDuplicates(Node*);
+    void getSubNodeHeights(Node*, int &left, int &right);
 
   public:
     BinarySearchTree();
