@@ -4,12 +4,14 @@
 #include <time.h>
 #include "treesort.h"
 
+
 int main() {
+    int size = 30;
     srand(time(NULL));
-    int size = 20;
     BinarySearchTree treeSort;
     for (int i = 0; i < size; i++) {
-        treeSort.insertEntry(rand() % 101);
+        int var = rand() % 201;
+        treeSort.insertEntry(var);
     }
     treeSort.displayTree(true);
     return 0;

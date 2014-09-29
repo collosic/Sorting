@@ -7,6 +7,8 @@ class Node {
     // Private variables
     int entry, height, dup_count;
     Node *LeftNodePtr, *RightNodePtr;
+    Node *HigherNodePtr;
+    bool higher_node_direction;
 
   public:
     // Constructors
@@ -28,14 +30,16 @@ class Node {
     void assignNewLeftNode(Node *NewLeftNode) { LeftNodePtr = NewLeftNode; };
     void assignNewRightNode(Node *NewRightNode) { RightNodePtr = NewRightNode; };
     void updateHeightOfNode(int left_h, int right_h) { height = std::max(left_h, right_h) + 1; };
+    void setHigherNodePtr(Node *N, bool dir) { HigherNodePtr = N; higher_node_direction = dir; };
+    Node* getHigherNodePtr() { return HigherNodePtr; };
+    bool getHigherNodeDir() { return higher_node_direction; };
     void incrementDuplicateCount() { dup_count++; };
+    int getDupCount() { return dup_count; };
 };  
 
 class BinarySearchTree {
     // Private variables 
     Node *RootNode;
-    Node *LinkNode;
-    bool link_direction;
     bool is_root_empty;
     
     // Private methods
@@ -48,10 +52,9 @@ class BinarySearchTree {
     Node* rightRotation(Node*);
     void ascending(Node*);
     void descending(Node*);
-    void assignLinkNode(Node* N) { LinkNode = N; };
-    Node* getLinkNode() { return LinkNode; };
-    void setLinkDirection(bool t) { link_direction = t; };
-    bool getLinkDirection() { return link_direction; };
+    void determineNewHeight(Node*);
+    void determineNewHeight(Node*, int&, int&);
+    void checkForDuplicates(Node*);
 
   public:
     BinarySearchTree();
