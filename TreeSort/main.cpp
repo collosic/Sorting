@@ -1,3 +1,4 @@
+// Example main.cpp on how to use treesort.h
 #include <iostream>
 #include "treesort.h"
 using namespace std;
