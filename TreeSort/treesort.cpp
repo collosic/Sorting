@@ -20,7 +20,7 @@ Node::Node(int a) {
 }
 
 
-// Constructors and Methods for BinarySearchTree
+// Constructors and Methods for BinarySearchTree.
 BinarySearchTree::BinarySearchTree() {
 	RootNode = new Node();
 	is_root_empty = true;
