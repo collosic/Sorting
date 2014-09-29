@@ -48,8 +48,8 @@ void BinarySearchTree::determineEntryPlacement(Node *CurrentNode, int entry) {
         else {
             // Used to link the top Node in a subtree when balancing
             if(CurrentNode->getHeight() >= 2) {
-            	// Link the left node with this current node as its 
-            	// higher node. Used for linking rotated subtrees
+                // Link the left node with this current node as its 
+                // higher node. Used for linking rotated subtrees
                 Node *LeftN = CurrentNode->getLeftNodePtr();
                 LeftN->setHigherNodePtr(CurrentNode, LEFT_EDGE);
             }
@@ -227,13 +227,13 @@ void BinarySearchTree::descending(Node *Node) {
 }
 
 void BinarySearchTree::checkForDuplicates(Node *Node) {
-	int duplicateCount = Node->getDupCount();
-	int entry = Node->getEntry();
-	if(duplicateCount > 0) {
-		for(int i = 0; i < duplicateCount; i++) {
-			std::cout << entry << std::endl;
-		}
-	}
-	std::cout << entry << std::endl;
+    int duplicateCount = Node->getDupCount();
+    int entry = Node->getEntry();
+    if(duplicateCount > 0) {
+        for(int i = 0; i < duplicateCount; i++) {
+            std::cout << entry << std::endl;
+        }
+    }
+    std::cout << entry << std::endl;
 }
 
