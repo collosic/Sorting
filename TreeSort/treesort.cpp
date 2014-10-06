@@ -8,16 +8,20 @@
 #define LINKED_RIGHT false
 #define LEFT_EDGE true
 #define RIGHT_EDGE false
+#define LEFT_HEAVY 2
+#define RIGHT_HEAVY -2
+#define LEFT_LEFT_CASE 1
+#define RIGHT_RIGHT_CASE -1
 #define NULL_PTR 0
 
 // Constructors and Methods for the Node Class
 Node::Node() {
     entry = height = dup_count = 0;
-    LeftNodePtr = RightNodePtr = HigherNodePtr = 0;
+    LeftNodePtr = RightNodePtr = HigherNodePtr = NULL_PTR;
 }
 Node::Node(int a) {
     entry = a;
-    LeftNodePtr = RightNodePtr = HigherNodePtr = 0;
+    LeftNodePtr = RightNodePtr = HigherNodePtr = NULL_PTR;
     height = dup_count = 0;
 }
 
@@ -49,9 +53,9 @@ void BinarySearchTree::determineEntryPlacement(Node *CurrentNode, int entry) {
             // Used to link the top Node in a subtree when balancing
             if(CurrentNode->getHeight() >= 2) {
                 // Link the left node with this current node as its 
-                // higher node. Used for linking rotated subtrees
-                Node *LeftN = CurrentNode->getLeftNodePtr();
-                LeftN->setHigherNodePtr(CurrentNode, LEFT_EDGE);
+                // parent node. Used for linking rotated subtrees
+                Node *LeftChild = CurrentNode->getLeftNodePtr();
+                LeftChild->setHigherNodePtr(CurrentNode, LEFT_EDGE);
             }
             determineEntryPlacement(CurrentNode->getLeftNodePtr(), entry);  
         }   
@@ -60,8 +64,8 @@ void BinarySearchTree::determineEntryPlacement(Node *CurrentNode, int entry) {
             CurrentNode->createNewRightNode(entry);
         else {
             if(CurrentNode->getHeight() >= 2) {
-                Node *RightN = CurrentNode->getRightNodePtr();
-                RightN->setHigherNodePtr(CurrentNode, RIGHT_EDGE);
+                Node *RightChild = CurrentNode->getRightNodePtr();
+                RightChild->setHigherNodePtr(CurrentNode, RIGHT_EDGE);
             }
             determineEntryPlacement(CurrentNode->getRightNodePtr(), entry);         
         }
@@ -71,12 +75,11 @@ void BinarySearchTree::determineEntryPlacement(Node *CurrentNode, int entry) {
         CurrentNode->incrementDuplicateCount();     
     }
     // Get the new height of the current node
-    int left_height;
-    int right_height;
-    determineNewHeight(CurrentNode, left_height, right_height);
+    int left_child_height, right_child_height;
+    determineNewHeight(CurrentNode, left_child_height, right_child_height);
 
     // Call the AVL method to determine if the BST is unbalanced
-    checkIfUnbalanced(CurrentNode, left_height, right_height);
+    checkIfUnbalanced(CurrentNode, left_child_height, right_child_height);
 }   
 
 void BinarySearchTree::determineNewHeight(Node* CNode) {
@@ -107,10 +110,10 @@ void BinarySearchTree::checkIfUnbalanced(Node *TopNode, int left, int right) {
     int balance_factor = left - right;  
     
     // Left Case
-    if(balance_factor >= 2)
+    if(balance_factor >= LEFT_HEAVY)
         balanceTree(TopNode, LINKED_LEFT);  
     // Right Case
-    if(balance_factor <= -2) 
+    if(balance_factor <= RIGHT_HEAVY) 
         balanceTree(TopNode, LINKED_RIGHT);
 }
 
@@ -124,7 +127,7 @@ void BinarySearchTree::balanceTree(Node *TopNode, bool direction) {
         // Calculate balance factor of LeftNode 
         int left_bf = l_node - r_node;
         
-        if(left_bf == 1) // Left-Left Case
+        if(left_bf == LEFT_LEFT_CASE) // Left-Left Case
             rotateAndLink(TopNode, LINKED_RIGHT);
         else             // Left-Right Case
             twoRotations(TopNode, LeftNode, LINKED_RIGHT);                  
@@ -136,7 +139,7 @@ void BinarySearchTree::balanceTree(Node *TopNode, bool direction) {
         
         int right_bf = l_node - r_node;
         
-        if(right_bf == -1)  // Right-Right Case
+        if(right_bf == RIGHT_RIGHT_CASE)  // Right-Right Case
             rotateAndLink(TopNode, LINKED_LEFT);
         else                // Right-Left Case
             twoRotations(TopNode, RightNode, LINKED_LEFT);  
